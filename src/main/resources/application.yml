@@ -1,0 +1,11 @@
+
+#mq配置
+com:
+  mqtt:
+    host: tcp://127.0.0.1:1883
+    clientid: JavaSample
+    topic: device/
+    username: test
+    password: test
+    timeout: 10
+    keepalive: 20

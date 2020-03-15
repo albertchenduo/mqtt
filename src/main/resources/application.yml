@@ -2,8 +2,8 @@
 #mq配置
 com:
   mqtt:
-    host: tcp://127.0.0.1:1883
-    clientid: JavaSample
+    broker: tcp://127.0.0.1:1883
+    clientId: JavaSample
     topic: device/
     username: test
     password: test

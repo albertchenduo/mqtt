@@ -99,8 +99,8 @@ public class MqttUtil {
 		//发布消息
 		publish(content,qos,topic);
 		//断开连接
-		disconnect();
+//		disconnect();
 		//关闭客户端
-		close();
+//		close();
 	}
 }

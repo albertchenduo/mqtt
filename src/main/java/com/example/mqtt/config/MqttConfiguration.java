@@ -1,6 +1,5 @@
 package com.example.mqtt.config;
 
-import com.example.mqtt.util.MqttUtil;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -8,7 +7,6 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * @Description
@@ -38,17 +36,24 @@ public class MqttConfiguration {
 	@Value("${com.mqtt.keepalive}")
 	private int keepalive;
 
+
+	@Bean
+	public MqttConnectOptions getMqttConnectOptions(){
+		MqttConnectOptions connOpts = new MqttConnectOptions();
+		connOpts.setCleanSession(true);
+		connOpts.setUserName(username);
+		connOpts.setPassword(password.toCharArray());
+		return connOpts;
+	}
+
 	@Bean
 	public MqttClient assembleMqttClient(){
 		MemoryPersistence persistence = new MemoryPersistence();
 		try {
 			MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
-			MqttConnectOptions connOpts = new MqttConnectOptions();
-			connOpts.setCleanSession(true);
-			connOpts.setUserName(username);
-			connOpts.setPassword(password.toCharArray());
+
 			System.out.println("Connecting to broker:" + broker);
-			sampleClient.connect(connOpts);
+			sampleClient.connect(getMqttConnectOptions());
 			System.out.println("Connected");
 			return sampleClient;
 		} catch (MqttException me) {
@@ -62,11 +67,4 @@ public class MqttConfiguration {
 		return null;
 	}
 
-
-//	@Bean(name = "mqttUtil")
-//	public MqttUtil mqttUtil(MqttClient mqttClient){
-//		MqttUtil mqttUtil = new MqttUtil();
-//		mqttUtil.setMqttClient(mqttClient);
-//		return mqttUtil;
-//	}
 }

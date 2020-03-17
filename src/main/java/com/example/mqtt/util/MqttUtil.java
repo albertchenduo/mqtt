@@ -10,10 +10,6 @@ public class MqttUtil {
 
 	private MqttClient mqttClient;
 
-	public void setMqttClient(MqttClient mqttClient) {
-		this.mqttClient = mqttClient;
-	}
-
 
 	public MqttUtil(MqttClient mqttClient) {
 		this.mqttClient = mqttClient;
@@ -40,6 +36,17 @@ public class MqttUtil {
 
 				@Override
 				public void connectionLost(Throwable throwable) {
+					while (true){
+						try {
+							if (!mqttClient.isConnected()){
+								mqttClient.reconnect();
+							}else {
+								break;
+							}
+						} catch (MqttException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			});
 		} catch (MqttException e) {
@@ -60,6 +67,7 @@ public class MqttUtil {
 			message.setQos(qos);
 			mqttClient.publish(topic, message);
 			System.out.println("Message published");
+			System.out.println("========================================");
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}

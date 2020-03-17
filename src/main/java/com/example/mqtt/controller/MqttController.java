@@ -19,7 +19,9 @@ public class MqttController {
 
 	@PostMapping("/send")
 	public void send(@RequestBody PayLoad payload){
-
+//		for (int i =0;i<1000;i++){
+//			mqttUtil.send(payload.getTopic(),payload.getQos(),payload.getConctent());
+//		}
 		mqttUtil.send(payload.getTopic(),payload.getQos(),payload.getConctent());
 	}
 
